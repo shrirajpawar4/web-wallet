@@ -39,48 +39,63 @@ export default function Home() {
     setPublicKeys([...publicKeys, publicKey]);
   }
 
+  const mnemonicWords = mnemonic.split(" ");
+  const mnemonicGrid = [];
+
+  for (let i = 0; i < mnemonicWords.length; i += 4) {
+    mnemonicGrid.push(mnemonicWords.slice(i, i + 4));
+  }
+
   return (
     <main className="max-w-3xl mx-auto p-4 md:p-6 lg:p-8">
-    <h1 className="text-3xl font-bold mb-4">Wallet Generator</h1>
-    <button
-      className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-4"
-      onClick={createMnemonic}
-    >
-      Create Mnemonic
-    </button>
-    <input
-      type="text"
-      value={mnemonic}
-      className="w-full p-2 mb-4 text-black border border-gray-400 rounded"
-    />
+      <h1 className="text-3xl font-bold mb-4">Wallet Generator</h1>
+      <button
+        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-4"
+        onClick={createMnemonic}
+      >
+        Create Mnemonic
+      </button>
+      <div className="grid grid-cols-1 gap-2 mb-8">
+        {mnemonicGrid.map((row, rowIndex) => (
+          <div key={rowIndex} className="grid grid-cols-4 gap-2">
+            {row.map((word, wordIndex) => (
+              <div key={wordIndex} className="border p-2 text-center">
+                {word}
+              </div>
+            ))}
+          </div>
+        ))}
+      </div>
 
-    <button
-      className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mb-4"
-      onClick={createEthWallet}
-    >
-      Create ETH Wallet
-    </button>
-    <div className="mb-4">
-      {addresses.map((address, index) => (
-        <div key={index} className="bg-gray-900 p-2 mb-2 rounded">
-          ETH - {address}
-        </div>
-      ))}
-    </div>
+      <button
+        className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mb-4"
+        onClick={createEthWallet}
+      >
+        Create ETH Wallet
+      </button>
+      <div className="mb-8">
+        <h1>Ethereum Addresses</h1>
+        {addresses.map((address, index) => (
+          <div key={index} className="bg-gray-900 p-2 mb-2 rounded">
+            {address}
+          </div>
+        ))}
+      </div>
 
-    <button
-      className="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded mb-4"
-      onClick={createSolanaWallet}
-    >
-      Create Solana Wallet
-    </button>
-    <div className="mb-4">
-      {publicKeys.map((publicKey, index) => (
-        <div key={index} className="bg-gray-900 p-2 mb-2 rounded">
-          Solana - {publicKey.toBase58()}
-        </div>
-      ))}
-    </div>
-  </main>
+      <button
+        className="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded mb-4"
+        onClick={createSolanaWallet}
+      >
+        Create Solana Wallet
+      </button>
+      <div className="mb-4">
+        <h1>Solana Addresses</h1>
+        {publicKeys.map((publicKey, index) => (
+          <div key={index} className="bg-gray-900 p-2 mb-2 rounded">
+            {publicKey.toBase58()}
+          </div>
+        ))}
+      </div>
+    </main>
   );
 }
